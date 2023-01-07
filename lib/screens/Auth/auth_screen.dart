@@ -20,7 +20,7 @@ class _AuthScreenState extends State<AuthScreen> {
   Auth _auth = Auth.signup;
   final _signUpFormKey = GlobalKey<FormState>();
   final _signInFormKey = GlobalKey<FormState>();
-
+   bool _obscureText = true; 
 
 
 
@@ -64,8 +64,43 @@ class _AuthScreenState extends State<AuthScreen> {
                const SizedBox(height: 10,),
                 CustomTextField(controller: authController.email,hintText: "Email",),
                const SizedBox(height: 10,),
-                CustomTextField(controller: authController.password,hintText: "Password",),
-                const SizedBox(height: 10,),
+                 TextFormField(
+    
+      controller: authController.password,
+      
+      decoration: InputDecoration(
+     hintText:"Password" ,
+     suffixIcon: GestureDetector(onTap: () {
+      setState(() {
+        _obscureText =!_obscureText;
+      });
+       
+     },
+     child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+     ),
+     
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+            ),
+         
+      ),
+      enabledBorder: const OutlineInputBorder(
+        
+        borderSide: BorderSide(
+          color: Colors.black38,
+          
+        )
+        
+      )
+      ),
+      validator: (value) {
+        
+      },
+      obscureText: _obscureText,
+    
+    ),
+                 const SizedBox(height: 10,),
                 CustomButton(text: "Sign Up", onTap: () { 
                   authController.signUp();            
                 })
@@ -96,7 +131,42 @@ class _AuthScreenState extends State<AuthScreen> {
               children: [
                 CustomTextField(controller:authController.email,hintText: "Email",),
                const SizedBox(height: 10,),
-                CustomTextField(controller: authController.password,hintText: "Password",),
+               // CustomTextField(controller: authController.password,hintText: "Password",),
+                TextFormField(
+    
+      controller: authController.password,
+      
+      decoration: InputDecoration(
+     hintText:"Password" ,
+     suffixIcon: GestureDetector(onTap: () {
+      setState(() {    
+       _obscureText =!_obscureText;
+      });
+     },
+     child: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+     ),
+     
+          border: const OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+            ),
+         
+      ),
+      enabledBorder: const OutlineInputBorder(
+        
+        borderSide: BorderSide(
+          color: Colors.black38,
+          
+        )
+        
+      )
+      ),
+      validator: (value) {
+        
+      },
+      obscureText: _obscureText,
+    
+    ),
                 const SizedBox(height: 10,),
                 CustomButton(text: "Sign In", onTap: () { 
                   authController.signIn();            

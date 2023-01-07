@@ -17,13 +17,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     //  Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => [
-          SliverAppBar(
+      appBar: AppBar(
+        
             backgroundColor: Colors.white,
             iconTheme: IconThemeData(color: kPrimaryColor),
-            flexibleSpace: FlexibleSpaceBar(
-              title: Text(
+             elevation: 0,
+        title: Text(
                 '3b3fa',
                 style: TextStyle(
                   fontSize: 24,
@@ -32,10 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               centerTitle: true,
-            ),
-            floating: true,
-            elevation: 0,
-          ),
+      ),
+      body: NestedScrollView(
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          // SliverAppBar(
+          //   flexibleSpace: FlexibleSpaceBar(
+              
+          //   ),
+          //   floating: true,
+           
+          // ),
         ],
         body: Obx(
           () => homeController.connectionStatus.value == 1
@@ -78,10 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               onTap: () {
-                Get.to(() => ContactUs());
+                Get.to(() => TermsAndConditions());
               },
               leading: Icon(Icons.help),
-              title: Text("Contact us"),
+              title: Text("Terms and Conditions"),
             ),
             ListTile(
               onTap: () {

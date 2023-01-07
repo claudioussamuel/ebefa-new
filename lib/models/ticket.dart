@@ -11,7 +11,7 @@ class TickectModel {
   static const PRICE = "price";
   static const DATE = "date";
   static const ADMINID = 'adminId';
-  static const SUBACCOUNTNUMBER = 'subAccountNumber';
+  static const SUBACCOUNTNUMBER = 'sub-account-number';
   static const CONTACT = 'contact';
   static const SPLIT_CODE = 'split-code';
 

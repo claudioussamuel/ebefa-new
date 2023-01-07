@@ -45,14 +45,20 @@ class SingleTicketWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                ticket.name ?? "",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                ticket.location!,
-                style: TextStyle(color: Colors.grey),
-              ),
+             SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    ticket.name ?? "",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+             SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Text(
+                    ticket.location!,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
               // color: Colors.grey,
 
               SizedBox(
@@ -61,17 +67,19 @@ class SingleTicketWidget extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
+                  Container(
+                    width: 84,
                     padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      "₵${ticket.price ?? ''}",
-                      style:
-                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Text(
+                        "₵${ticket.price ?? ''}",
+                        style:
+                            TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
-                  SizedBox(
-                    width: 30,
-                  ),
+                  
 
 //================== this part is static
 //================== add to the data base

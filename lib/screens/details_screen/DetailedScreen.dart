@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
+import 'package:min_id/min_id.dart';
 import '../../constant/constants.dart';
+import '../../constant/firbase.dart';
+import '../../generating_pdf/pdf_api.dart';
+import '../../generating_pdf/pdf_invoice_api.dart';
+import '../../models/UsersWhoBoughtTheTickectModel.dart';
 import '../../models/ticket.dart';
 import '../payment/pay_screen.dart';
 import 'dart:convert';
@@ -17,8 +23,7 @@ class DetailsScreen extends StatelessWidget {
 
     makePayment(double? amount, String email, String? subAccount, String splitCode) async {
       Map<String, String> headers = {
-        'Authorization':
-            'Bearer sk_test_c92466e2d1031748ab44f1995df0a57e504f5221',
+        'Authorization': 'Bearer ${dotenv.env['PAYSTACK_API']}',
         'Content-Type': 'application/json'
       };
       Request request = Request(
@@ -28,25 +33,27 @@ class DetailsScreen extends StatelessWidget {
       request.body = json.encode({
         'email': email,
         'amount': amount! * 100,
-        "subaccount": subAccount ?? '',
+       // "subaccount": subAccount ?? '',
         "callback_url" : "https://google.com",
         "split_code": splitCode,
         "metadata": {
-  "cancel_action": "https://facebook.com",
+        "cancel_action": "https://facebook.com",
   
-}
+       }
       });
       request.headers.addAll(headers);
       StreamedResponse response = await request.send();
 
       Map<String, dynamic> data;
+      print("Response is ${email}");
       if (response.statusCode == 200) {
+
         // print(await response.stream.bytesToString());
         data = json.decode(await response.stream.bytesToString());
         url = data['data']['authorization_url'];
         print('$url  the original');
       } else {
-        (response.reasonPhrase);
+        print(response.reasonPhrase);
         url = "facebook.com";
       }
     }
@@ -68,10 +75,34 @@ class DetailsScreen extends StatelessWidget {
                     onPressed: () async {
                    
 
-                   
-                      makePayment(
+
+                          if(ticket.price == 0){
+                               final userTickectId = MinId.getId();
+                      
+
+                        cartController.addTicket(
+                          ticket,
+                          UsersWhoBoughtTheTickectModel(
+                            email: auth.currentUser?.email,
+                            name: authController.userModel.value.name,
+                            id: userTickectId,
+                          ));
+
+                      cartController.addTicketBought(
+                          ticket,
+                          UsersWhoBoughtTheTickectModel(
+                            email: auth.currentUser?.email,
+                            name: authController.userModel.value.name,
+                            id: userTickectId,
+                            event: ticket.name,
+                          ));
+
+ final pdfFile = await PdfInvoiceApi.generate(ticket,userTickectId);
+                     PdfApi.openFile(pdfFile);
+                          }else{
+                            makePayment(
                               ticket.price,
-                              authController.userModel.value.email ?? "",
+                              authController.userModel.value.email ?? "3b3faapp@gmail.com",
                               ticket.subAccountNumber,
                               ticket.splitCode ?? "")
                           .whenComplete(() => {
@@ -80,6 +111,10 @@ class DetailsScreen extends StatelessWidget {
                                       ticket: ticket,
                                     ))
                               });
+
+                          }
+                   
+                      
 
                       print('$url ' + 'the url is');
 
